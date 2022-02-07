@@ -6,8 +6,8 @@ html, body {
 }
 
 .grid {
-    width: 500px;
-    height: 500px;
+    width: 600px;
+    height: 599px;
     border: 1px solid #000;
     margin: 0 auto;
     display: flex;
@@ -15,14 +15,39 @@ html, body {
 }
 
 .square {
-    width: 48px;
-    height: 48px;
+    width: 35.294117647058826px;
+    height: 35.294117647058826px;
     /* padding: 10px; */
-    background: red;
-    border: 1px solid blue;
+    background: rgb(16, 179, 16);
+    /* border: 1px solid blue; */
     display: block;
 }
 
-.snake {
-    background: green;
+.square.alt {
+    background: rgb(11, 128, 11);
+}
+
+.grid .snake {
+    animation: snake-move 1000ms ease-in-out infinite;
+    background: radial-gradient( rgb(247, 3, 3), rgb(39, 15, 179), rgb(66, 233, 15)) !important;
+}
+
+@keyframes snake-move {
+    0% {
+        transform: translate(-.5%, -.5%);
+    }
+    25% {
+        transform: translate(.5%, .5%);
+    }
+    50% {
+        transform: translate(-.5%, .5%);
+    }
+    100% {
+        transform: translate(.5%, -.5%);
+    }
+}
+
+.grid .apple {
+    background: url("apple.svg");
+    background-size: contain;
 }
