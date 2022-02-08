@@ -4,14 +4,32 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@900&family=Supermercado+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script async src="script.js"></script>
     <title>Document</title>
 </head>
 <body>
     <h1>Snake Game</h1>
-    <button id="start">Start</button>
     <h2>Score: <span id="score">0</span></h2>
-    <div class="grid"></div>
+    <div class="grid">
+        <div class="grid-modal">
+            <div class="modal-message" id="gameover">
+                <h2>Game Over</h2>
+                <p>
+                    Final Score: <span id="final-score">0</span>
+                </p>
+                <button id="restart-btn">Restart</button>
+            </div>
+            <div class="modal-message" id="start">
+                <p>Controls</p>
+                <img src="arrow_keys.svg" alt="image of arrow keys">
+                <button id="start-btn">Start</button>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>

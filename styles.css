@@ -3,12 +3,38 @@ html, body {
     padding: 10px;
     text-align: center;
     box-sizing: border-box;
+    font-family: 'Supermercado One', cursive; 
+    color: #fff;
+}
+
+body {
+    
+    background: radial-gradient( rgb(247, 3, 3), rgb(39, 15, 179))
+}
+
+/* font-family: 'Inconsolata', monospace; */
+/* font-family: 'Supermercado One', cursive; */
+
+button {
+    border: none;
+    padding: 15px 30px;
+    background: #3498DB;
+    color:#fff;
+    font-size: 1.5rem;
+    border-radius: 10px;
+    margin-top: 30px;
+    font-family: 'Inconsolata', monospace; 
+}
+
+img {
+    display: block;
+    margin: auto;
+    transform: scale(1.5);
 }
 
 .grid {
     width: 600px;
     height: 599px;
-    border: 1px solid #000;
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
@@ -17,9 +43,7 @@ html, body {
 .square {
     width: 35.294117647058826px;
     height: 35.294117647058826px;
-    /* padding: 10px; */
     background: rgb(16, 179, 16);
-    /* border: 1px solid blue; */
     display: block;
 }
 
@@ -50,4 +74,36 @@ html, body {
 .grid .apple {
     background: url("apple.svg");
     background-size: contain;
+}
+
+.grid-modal {
+    position: fixed;
+    background: rgba(105, 105, 105, 0.644);
+    background-size: contain;
+    width: 600px;
+    height: 600px;
+    z-index: 10;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    backdrop-filter: blur(5px);
+    font-family: 'Inconsolata', monospace; 
+}
+
+.modal-message {
+    margin-top: 50px;
+    padding: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#gameover {
+    display: none;
+}
+
+#start {
+    display: block;
 }

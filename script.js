@@ -1,17 +1,18 @@
 const grid = document.querySelector('.grid')
-const startBtn = document.querySelector('#start')
+const startBtn = document.querySelector('#start-btn')
+const restartBtn = document.querySelector('#restart-btn')
 const score = document.querySelector('#score')
 let gridArr = []
 let currentSnake = [139,140,141]
+const initialSnake = [139,140,141]
 let movement = setInterval(null, 1000)
-// let head = currentSnake.length - 1
-let currentDirection = null
+let currentDirection = 'right'
 const width = 17 //number of squares in row
 let wallHitDelay;
 let selfHitDelay;
-let isGameOver;
-let head;
-let movementSpeed = 500
+let isGameOver = false;
+let head = currentSnake.length - 1;
+let movementSpeed = 450
 let appleIndex = 0
 let applesEaten = 0
 const movementSpeedMultiplier = {
@@ -19,6 +20,10 @@ const movementSpeedMultiplier = {
     medium: .9,
     hard: .7
 }
+const gridModal = document.querySelector('.grid-modal')
+const finalScore = document.getElementById('final-score')
+const gameoverMsg = document.getElementById('gameover')
+const startMsg = document.getElementById('start')
 
 function createGrid() {
     for (let i = 0; i < width*width; i++) {
@@ -36,8 +41,12 @@ createGrid()
 renderSnake()
 
 startBtn.addEventListener('click', () => {
-    generateApples()
-    movement = setInterval(move, movementSpeed, 'right')
+    if(!isGameOver) {
+        startMsg.style.display = 'none'
+        gridModal.style.display = 'none'
+        generateApples()
+        movement = setInterval(move, movementSpeed)
+    }
 })
 
 
@@ -46,48 +55,42 @@ function renderSnake() {
     currentSnake.forEach(index => gridArr[index].classList.add('snake'))
 }
 
-function move(direction) {
+function move() {
     head = currentSnake.length - 1
-
-    if (direction == 'right') {
+    // wallHitDelay = setTimeout(isHitWall, movementSpeed/2)
+    // selfHitDelay = setTimeout(isHitSelf, movementSpeed/2)
+    isHitSelf()
+    isHitWall()
+    if (isGameOver) {return}
+    
+    if (currentDirection == 'right') {
         currentSnake.push(currentSnake[head] + 1)
     }
-    if (direction == 'left') {
+    if (currentDirection == 'left') {
         currentSnake.push(currentSnake[head] - 1)
     }
-    if (direction == 'up') {
+    if (currentDirection == 'up') {
         currentSnake.push(currentSnake[head] - width)
     }
-    if (direction == 'down') {
+    if (currentDirection == 'down') {
         currentSnake.push(currentSnake[head] + width)
     }
+    // currentDirection = direction
     isEatingApple()
-    // if (gridArr[currentSnake[head]].classList.contains('apple')) {
-    //     gridArr[currentSnake[head]].classList.remove('apple')
-    //     applesEaten++
-    //     score.textContent = applesEaten
-    //     generateApples()
-    // } else {
-    //     currentSnake.shift()
-    // }
-    
-    currentDirection = direction
     renderSnake()
-    wallHitDelay = setTimeout(isHitWall, movementSpeed/2)
-    selfHitDelay = setTimeout(isHitSelf, movementSpeed/2)
-    // console.log(currentSnake[head])
+
 }
 
 document.addEventListener('keydown', changeDirection)
 
 function changeDirection (event) {
-    console.log(event)
     if(isLegalMove(event) && !isGameOver) {
-        clearInterval(movement)
-        clearTimeout(wallHitDelay)
-        clearTimeout(selfHitDelay)
-        const direction = directionID(event.key)
-        movement = setInterval(move, movementSpeed, direction)
+        // clearInterval(movement)
+        // clearTimeout(wallHitDelay)
+        // clearTimeout(selfHitDelay)
+        let direction = directionID(event.key)
+        currentDirection = direction
+        // movement = setInterval(move, movementSpeed, direction)
     }
 }
 
@@ -107,13 +110,13 @@ function directionID(string) {
 }
 
 function isHitWall() {
-//checks snake head and direction to see if hit wall
     if (
         (currentSnake[head] % width === 0 && currentDirection === 'left') ||
         (currentSnake[head] % width === width-1 && currentDirection === 'right') ||
         (currentSnake[head] + width >= width*width && currentDirection === 'down') ||
         (currentSnake[head] - width < 0 && currentDirection === 'up')
-    ) {gameOver()}
+    ) 
+    gameOver()
 }
 
 function isHitSelf() {
@@ -136,7 +139,6 @@ function generateApples() {
     }
 }
 
-//need to have snake eat apple properly, either place in move function or abstract here
 function isEatingApple() { 
     if (gridArr[currentSnake[head]].classList.contains('apple')) {
         gridArr[currentSnake[head]].classList.remove('apple')
@@ -147,20 +149,33 @@ function isEatingApple() {
     } else {
         currentSnake.shift()
     }
-    console.log(movementSpeed)
 }
 
-// console.log(appleIndex)
 
 function gameOver() {
-    //called when snake hits wall, build in when hits self too
-    // gameOverModal.classList.add('active')
     clearInterval(movement)
-    console.log('game over')
+    clearTimeout(wallHitDelay)
+    clearTimeout(selfHitDelay)
     isGameOver = true;
+    gridModal.style.display = 'flex'
+    gameoverMsg.style.display = 'block'
+    finalScore.textContent = applesEaten
 }
 
+restartBtn.addEventListener('click', restartGame)
+
 function restartGame() {
-    // this will be a button in modal that pops up after game over
-    //restart game logic
+    applesEaten = 0
+    score.textContent = applesEaten
+    gridArr[appleIndex].classList.remove('apple')
+    currentSnake = [139,140,141]
+    currentDirection = 'right'
+    movementSpeed = 450
+    renderSnake()
+    isGameOver = false
+    gameoverMsg.style.display = 'none'
+    startMsg.style.display = 'block'
 }
+
+
+//something not right, snake continues when shouldn't
